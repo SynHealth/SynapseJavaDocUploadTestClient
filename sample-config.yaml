@@ -1,0 +1,27 @@
+# Sample configuration for document upload test client
+
+# Document information
+file:
+privateKey:
+
+# OAuth2 authentication
+clientId:
+clientSecret:
+scope:
+grant_type:
+# Optional: Use default UAT token endpoint
+# tokenUrl: https://app-dmepos-identity-uat.azurewebsites.net/connect/token
+
+# API endpoint configuration
+# Option 1: Use a predefined endpoint type
+apiEndpointType: fhir  # Or use "fhir" for FHIR endpoint
+
+# Option 2: Use custom API URL (uncomment to use)
+# apiUrl: https://custom-api.example.com/documents
+
+# Optional metadata
+patientId:
+
+# Client settings
+verbose: true
+retryCount: 2

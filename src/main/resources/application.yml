@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: doc-uploader-test-client
+  main:
+    # Disable the web server since this is a command-line client
+    web-application-type: none
+    # Disable banner for cleaner output
+    banner-mode: off
+  cloud:
+    consul:
+      config:
+        enabled: false
+      discovery:
+        enabled: false
+
+# Logging configuration
+logging:
+  level:
+    root: INFO
+    com.synapsehealth: INFO
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(---){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx"
+
+# Retry settings for REST client
+http:
+  client:
+    max-retries: 3
+    connect-timeout: 10000
+    read-timeout: 30000
