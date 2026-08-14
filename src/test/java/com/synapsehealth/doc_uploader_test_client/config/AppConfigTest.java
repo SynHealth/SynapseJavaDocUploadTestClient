@@ -88,7 +88,7 @@ class AppConfigTest {
 
         String resolvedUrl = config.resolveApiUrl();
 
-        assertEquals("https://integrations-api.synapsehealth.dev/api/v1/fhir/binary", resolvedUrl);
+        assertEquals("https://integrations-api-phi.synapsehealth.dev/api/v1/fhir/binary", resolvedUrl);
     }
 
     @Test
@@ -99,7 +99,7 @@ class AppConfigTest {
 
         String resolvedUrl = config.resolveApiUrl();
 
-        assertEquals("https://integrations-api.synapsehealth.dev/api/v1/documents", resolvedUrl);
+        assertEquals("https://integrations-api-phi.synapsehealth.dev/api/v1/documents", resolvedUrl);
     }
 
     @Test

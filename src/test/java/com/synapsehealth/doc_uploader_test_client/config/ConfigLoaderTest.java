@@ -68,7 +68,7 @@ class ConfigLoaderTest {
                 tokenUrl, apiUrl, apiEndpointType, scope, grantType, patientId, verbose, retryCount
         );
 
-        assertEquals("https://app-dmepos-identity-uat.azurewebsites.net/connect/token",
+        assertEquals("https://login.microsoftonline.com/ae3a12b3-a1b6-492d-81fd-be75596c89b9/oauth2/v2.0/token",
                 config.getTokenUrl());
     }
 
@@ -80,7 +80,7 @@ class ConfigLoaderTest {
                 "client_credentials", false, 3
         );
 
-        assertEquals("https://integrations-api.synapsehealth.dev/api/v1/fhir/binary",
+        assertEquals("https://integrations-api-phi.synapsehealth.dev/api/v1/fhir/binary",
                 config.getApiUrl());
 
         AppConfig config2 = ConfigLoader.createFromCliArgs(
@@ -89,7 +89,7 @@ class ConfigLoaderTest {
                 "client_credentials", null, false, 3
         );
 
-        assertEquals("https://integrations-api.synapsehealth.dev/api/v1/documents",
+        assertEquals("https://integrations-api-phi.synapsehealth.dev/api/v1/documents",
                 config2.getApiUrl());
     }
 

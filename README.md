@@ -37,9 +37,9 @@ com.synapsehealth.doc_uploader_test_client
 ### Technical Stack
 
 - **Java 21** - Core language
-- **Spring Boot 3.5.3** - Application framework
+- **Spring Boot 4.1.0** - Application framework
 - **Picocli 4.7.5** - Command-line parsing
-- **Bouncy Castle 1.77** - Cryptographic operations
+- **Bouncy Castle 1.85** - Cryptographic operations
 - **Jackson** - JSON/YAML handling
 
 ## Key Components
@@ -143,12 +143,12 @@ The client supports both command-line arguments and configuration files (YAML or
 ### Endpoint Selection
 
 The client now supports two predefined API endpoints:
-1. **FHIR Endpoint**: `https://integrations-api.synapsehealth.dev/api/v1/fhir/binary`
+1. **FHIR Endpoint**: `https://integrations-api-phi.synapsehealth.dev/api/v1/fhir/binary`
    - Use direct binary upload with appropriate content type headers
    - Parses complex FHIR OperationOutcome responses
    - Extracts document ID from nested issue.details.coding structure
 
-2. **REST Endpoint**: `https://integrations-api.synapsehealth.dev/api/v1/documents`
+2. **REST Endpoint**: `https://integrations-api-phi.synapsehealth.dev/api/v1/documents`
    - Use direct binary upload with appropriate content type headers
    - Parses simple JSON responses
    - Extracts document ID from top-level field
