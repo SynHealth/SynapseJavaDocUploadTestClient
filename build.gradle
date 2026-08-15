@@ -19,8 +19,20 @@ repositories {
 }
 
 ext {
-	// Boot 4.1 manages Jackson 2.x at 2.21.4; 2.21.5 carries the fix for CVE-2026-54515.
+	// Boot 4.1 manages Jackson 2.x at 2.21.4; 2.21.5 carries the fixes for
+	// CVE-2026-54515, CVE-2026-59889 and GHSA-mhm7-754n-9p8w. This overrides the
+	// whole Jackson 2 BOM, so transitive artifacts move with it. The declared
+	// dependencies below also carry the version explicitly, because static
+	// scanners read the dependency line and do not evaluate this override.
 	set('jackson-2-bom.version', "2.21.5")
+}
+
+configurations.all {
+	// log4j-api arrives only through the log4j-to-slf4j bridge in
+	// spring-boot-starter-logging. Nothing here logs through the log4j API - the
+	// code uses slf4j with a logback backend - so the bridge is dead weight that
+	// carries CVE-2026-49844. Excluding it drops both artifacts.
+	exclude group: 'org.apache.logging.log4j', module: 'log4j-to-slf4j'
 }
 
 dependencies {
@@ -39,10 +51,10 @@ dependencies {
 	}
 
 	// JSON parsing
-	implementation 'com.fasterxml.jackson.core:jackson-databind'
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.21.5'
 
 	// Add Jackson YAML dataformat dependency
-	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
+	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.21.5'
 
 	// Lombok for reducing boilerplate code
 	compileOnly 'org.projectlombok:lombok'
