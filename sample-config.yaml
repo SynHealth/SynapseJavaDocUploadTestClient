@@ -9,8 +9,8 @@ clientId:
 clientSecret:
 scope:
 grant_type:
-# Optional: Use default UAT token endpoint
-# tokenUrl: https://app-dmepos-identity-uat.azurewebsites.net/connect/token
+# Optional: override the default Microsoft Entra ID token endpoint
+# tokenUrl: https://login.microsoftonline.com/ae3a12b3-a1b6-492d-81fd-be75596c89b9/oauth2/v2.0/token
 
 # API endpoint configuration
 # Option 1: Use a predefined endpoint type

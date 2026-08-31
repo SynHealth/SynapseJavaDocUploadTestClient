@@ -6,12 +6,6 @@ spring:
     web-application-type: none
     # Disable banner for cleaner output
     banner-mode: off
-  cloud:
-    consul:
-      config:
-        enabled: false
-      discovery:
-        enabled: false
 
 # Logging configuration
 logging:

@@ -28,7 +28,7 @@ public class ConfigLoader {
     /**
      * Default token URL used when none is provided
      */
-    private static final String DEFAULT_TOKEN_URL = "https://app-dmepos-identity-uat.azurewebsites.net/connect/token";
+    private static final String DEFAULT_TOKEN_URL = "https://login.microsoftonline.com/ae3a12b3-a1b6-492d-81fd-be75596c89b9/oauth2/v2.0/token";
 
     /**
      * Default retry count used when none is provided or the provided value is invalid

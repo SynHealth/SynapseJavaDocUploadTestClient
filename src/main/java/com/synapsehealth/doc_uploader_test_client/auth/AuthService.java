@@ -109,7 +109,10 @@ public class AuthService {
 
             if (config.isVerbose()) {
                 logger.info("Token request URL: {}", config.getTokenUrl());
-                logger.info("Token request body: {}", requestBody);
+                // Never log requestBody directly - it carries the client secret, and the
+                // customer docs ask users to send verbose output to support.
+                logger.info("Token request: grant_type={}, client_id={}, scope={} (client_secret redacted)",
+                        config.getGrantType(), config.getClientId(), config.getScope());
             }
 
             // Make the request to the identity server

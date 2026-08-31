@@ -1,12 +1,12 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.5.3'
+	id 'org.springframework.boot' version '4.1.0'
 	id 'io.spring.dependency-management' version '1.1.7'
-	id 'com.github.johnrengelman.shadow' version '8.1.1'
+	id 'com.gradleup.shadow' version '9.6.0'
 }
 
 group = 'com.synapsehealth'
-version = '1.0.0'
+version = '1.1.0'
 
 java {
 	toolchain {
@@ -19,26 +19,42 @@ repositories {
 }
 
 ext {
-	set('springCloudVersion', "2025.0.0")
+	// Boot 4.1 manages Jackson 2.x at 2.21.4; 2.21.5 carries the fixes for
+	// CVE-2026-54515, CVE-2026-59889 and GHSA-mhm7-754n-9p8w. This overrides the
+	// whole Jackson 2 BOM, so transitive artifacts move with it. The declared
+	// dependencies below also carry the version explicitly, because static
+	// scanners read the dependency line and do not evaluate this override.
+	set('jackson-2-bom.version', "2.21.5")
+}
+
+configurations.all {
+	// log4j-api arrives only through the log4j-to-slf4j bridge in
+	// spring-boot-starter-logging. Nothing here logs through the log4j API - the
+	// code uses slf4j with a logback backend - so the bridge is dead weight that
+	// carries CVE-2026-49844. Excluding it drops both artifacts.
+	exclude group: 'org.apache.logging.log4j', module: 'log4j-to-slf4j'
 }
 
 dependencies {
-	implementation 'org.springframework.cloud:spring-cloud-starter-consul-config'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	// Core context only. This is a CLI, not a server, so no servlet container:
+	// spring-boot-starter-web would drag in Tomcat and spring-webmvc, neither of
+	// which is used (see application.yml: web-application-type: none).
+	implementation 'org.springframework.boot:spring-boot-starter'
 
-	// Security and JWT dependencies
-	implementation 'org.springframework.security:spring-security-oauth2-client'
-	implementation 'org.springframework.security:spring-security-oauth2-jose'
+	// RestTemplate + RestTemplateBuilder, without spring-webmvc or Tomcat.
+	// Boot 4 defaults to Jackson 3 (tools.jackson) for HTTP message conversion, but this
+	// client never lets Spring convert JSON: every call is exchanged as String and parsed
+	// by the services' own Jackson 2 ObjectMapper. Excluding the starter keeps a second,
+	// unused Jackson stack out of the shaded jar.
+	implementation('org.springframework.boot:spring-boot-starter-restclient') {
+		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-jackson'
+	}
 
 	// JSON parsing
-	implementation 'com.fasterxml.jackson.core:jackson-databind'
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.21.5'
 
 	// Add Jackson YAML dataformat dependency
-	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
-
-	// Yaml configuration
-	implementation 'org.yaml:snakeyaml'
+	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.21.5'
 
 	// Lombok for reducing boilerplate code
 	compileOnly 'org.projectlombok:lombok'
@@ -52,17 +68,11 @@ dependencies {
 	implementation 'org.slf4j:slf4j-api'
 	implementation 'ch.qos.logback:logback-classic'
 
-	// Bouncy Castle for additional crypto operations
-	implementation 'org.bouncycastle:bcpkix-jdk18on:1.77'
+	// Bouncy Castle for PEM private key parsing (SignatureService)
+	implementation 'org.bouncycastle:bcpkix-jdk18on:1.85'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
-
-dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-	}
 }
 
 tasks.named('test') {

@@ -155,10 +155,10 @@ public class AppConfig {
 
         // Default URLs based on endpoint type
         if ("fhir".equalsIgnoreCase(apiEndpointType)) {
-            return "https://integrations-api.synapsehealth.dev/api/v1/fhir/binary";
+            return "https://integrations-api-phi.synapsehealth.dev/api/v1/fhir/binary";
         } else {
             // REST endpoint
-            return "https://integrations-api.synapsehealth.dev/api/v1/documents";
+            return "https://integrations-api-phi.synapsehealth.dev/api/v1/documents";
         }
     }
 
